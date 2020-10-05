@@ -6,6 +6,7 @@ namespace Test\Service\Product;
 
 use Model\Entity\Product as ProductEntity;
 use Model\Repository\Product as ProductRepository;
+use phpDocumentor\Reflection\DocBlock\Description;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Service\Product\Product as ProductService;
@@ -52,7 +53,7 @@ class ProductTest extends TestCase
 
         yield 'product list' => [
             [
-                new ProductEntity(3, 'Another', 50.11),
+                new ProductEntity(3, 'Another', 50.11, 'Description of something'),
             ]
         ];
     }
@@ -97,15 +98,15 @@ class ProductTest extends TestCase
 
         yield 'product list' => [
             [
-                new ProductEntity(3, 'Another', 50.11),
-                new ProductEntity(10, 'Test', 199.99),
+                new ProductEntity(3, 'Another', 50.11,'Description of something'),
+                new ProductEntity(10, 'Test', 199.99,  'Description of something test'),
             ]
         ];
 
         yield 'product list with extreme values' => [
             [
-                new ProductEntity(0, '', 0),
-                new ProductEntity(PHP_INT_MAX, 'Test', 1.7976931348623e+308),
+                new ProductEntity(0, '', 0, ''),
+                new ProductEntity(PHP_INT_MAX, 'Test', 1.7976931348623e+308,  'Description of something Test'),
             ]
         ];
     }
