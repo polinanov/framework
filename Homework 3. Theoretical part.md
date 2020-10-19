@@ -11,19 +11,15 @@ Basket.php - есть магические числа в методе checkoutPr
   Класс VipDiscount
   Метод getDiscount
   $discount = $this->find($this->user)->discount();  
-
   Класс Basket
   Метод getProductsInfo
   $this->getProductRepository()->search($productIds);  
-
   Класс Product
   Метод getInfo
   $product = $this->getProductRepository()->search([$id]);  
-
   Класс Security,
   Методе authentication
   $user = $this->getUserRepository()->getByLogin($login);  
-
   В классе Basket 
   Метод checkout() используется корректно
   $billing = new Card();
