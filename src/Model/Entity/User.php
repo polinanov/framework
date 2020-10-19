@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Model\Entity;
 
+use phpDocumentor\Reflection\Types\This;
+
 class User
 {
     /**
@@ -85,5 +87,15 @@ class User
     public function getRole(): Role
     {
         return $this->role;
+    }
+    /**
+     * @return string
+     */
+    public function isAdmin(): string
+    {
+        if ($this->role->getType() == 'admin'){
+          return $this->getLogin();
+        }
+        return '0';
     }
 }

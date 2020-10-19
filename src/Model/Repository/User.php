@@ -8,6 +8,7 @@ use Model\Entity;
 
 class User
 {
+
     /**
      * Получаем пользователя по идентификатору
      *
@@ -57,6 +58,30 @@ class User
             $user['password'],
             new Entity\Role($role['id'], $role['title'], $role['role'])
         );
+    }
+
+    /**
+     * Отображение всех пользователей
+     *
+     * @param void
+     * @return void
+     */
+    public function outputUsers(): void
+    {
+        echo '<br>';
+        echo 'Все зарегистрированные пользователи:';
+        echo '<table border="1">';
+        echo '<tr><th align="right">Имя</th><th align="right">Логин</th><th align="right">Роль</th></tr>';
+        foreach ($this->getDataFromSource([]) as $user) {
+            echo '<tr><td align="right">';
+            echo (string)$user['name'];
+            echo '</td><td align="right">';
+            echo (string)$user['login'];
+            echo '</td><td align="right">';
+            echo (string)$user['role']['role'];
+            echo '</td></tr>';
+        }
+        echo '</table>';
     }
 
     /**

@@ -5,7 +5,7 @@ $body = function () use ($productList, $path) {
     ?>
     <p>Описание наших курсов</p>
 <?php
-            $position = 0;
+    $position = 0;
     foreach ($productList as $key => $product) {
         echo $position % 3 ? '' : '<br>'; ?>
                 <p>
