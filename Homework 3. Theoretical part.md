@@ -8,19 +8,19 @@ Basket.php - есть магические числа в методе checkoutPr
 
 2. В проекте много мест где нарушается принцип Деметры (объект вызывает метод своего класса, а методы discount и search уже не пренадлежат своему классу).  
   Например, 
-  Класс VipDiscount.  
+  *Класс VipDiscount.*  
   Метод getDiscount.  
   $discount = $this->find($this->user)->discount();  
-  Класс Basket.  
+  *Класс Basket.*  
   Метод getProductsInfo.  
   $this->getProductRepository()->search($productIds);  
-  Класс Product.  
+  *Класс Product.*  
   Метод getInfo.  
   $product = $this->getProductRepository()->search([$id]);  
-  Класс Security.  
+  *Класс Security.*  
   Методе authentication.  
   $user = $this->getUserRepository()->getByLogin($login);  
-  В классе Basket.  
+  *В классе Basket.*  
   Метод checkout() используется корректно.  
   $billing = new Card();  
   $discount = new NullObject();  
