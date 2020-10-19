@@ -91,11 +91,11 @@ class User
     /**
      * @return string
      */
-    public function isAdmin(): string
+    public function isAdmin(): bool
     {
         if ($this->role->getType() == 'admin'){
-          return $this->getLogin();
+          return true;
         }
-        return '0';
+        return false;
     }
 }

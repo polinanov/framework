@@ -9,7 +9,7 @@ $body = function () use ($path, $user) {
     Вы успешно авторизовались под логином <?= $user->getLogin() ?>
 <?php
     $isAdmin = $user->isAdmin();
-    if ($isAdmin != '0') {
+    if ($isAdmin == true) {
         (new Model\Repository\User())->outputUsers();
     }
 };
