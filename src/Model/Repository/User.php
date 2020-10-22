@@ -85,6 +85,29 @@ class User
     }
 
     /**
+     * Проверяем является ли пользователь администратором
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
+    public function isAdministrator(int $id): bool
+    {
+        foreach ($this->getDataFromSource([]) as $user) {
+            if ($user['id'] === $id) {
+                if ($user['role']['role'] == 'admin') {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }else
+                return false;
+        }
+        return false;
+    }
+
+    /**
      * Получаем пользователей из источника данных
      *
      * @param array $search

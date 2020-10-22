@@ -42,6 +42,17 @@ class Security implements ISecurity
     /**
      * @inheritdoc
      */
+    public function isAdmin(): bool
+    {
+        $userId = $this->session->get(self::SESSION_USER_IDENTITY);
+        if ($userId == null)
+            return false;
+        $admin = (new Model\Repository\User())->isAdministrator($userId);
+        return $admin;
+    }
+    /**
+     * @inheritdoc
+     */
     public function authentication(string $login, string $password): bool
     {
         $user = $this->getUserRepository()->getByLogin($login);

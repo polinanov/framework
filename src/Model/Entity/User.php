@@ -88,14 +88,4 @@ class User
     {
         return $this->role;
     }
-    /**
-     * @return string
-     */
-    public function isAdmin(): bool
-    {
-        if ($this->role->getType() == 'admin'){
-          return true;
-        }
-        return false;
-    }
 }

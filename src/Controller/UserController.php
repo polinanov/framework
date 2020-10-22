@@ -51,4 +51,16 @@ class UserController
 
         return $this->redirect('index');
     }
+
+    /**
+     * Выводим список пользователей
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function usersList(Request $request): Response
+    {
+        $user = new Security($request->getSession());
+        return $this->render('user/users_list.html.php', ['user' => $user->getUser()]);
+    }
 }

@@ -23,7 +23,11 @@
                                     <tr><td><a href="<?= $path('user_authentication') ?>">Авторизация</a></td></tr>
                                 <?php
 } else {
-        ?>
+                                     if ($isAdmin){
+                                         ?>
+                                        <tr><td><a href="<?= $path('users_list') ?>">Список пользователей</a></td></tr>
+
+                                    <?php }?>
                                     <tr><td><a href="<?= $path('logout') ?>">Выход</a></td></tr>
                                 <?php
     } ?>

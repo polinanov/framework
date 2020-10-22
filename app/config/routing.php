@@ -40,7 +40,10 @@ $routes->add(
     'order_checkout',
     new Route('/order/checkout', ['_controller' => [OrderController::class, 'checkoutAction']])
 );
-
+$routes->add(
+    'users_list',
+    new Route('/user/list', ['_controller' => [\Controller\UserController::class, 'usersList']])
+);
 $routes->add(
     'user_authentication',
     new Route('/user/authentication', ['_controller' => [\Controller\UserController::class, 'authenticationAction']])
