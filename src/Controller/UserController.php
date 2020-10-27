@@ -63,4 +63,17 @@ class UserController
         $user = new Security($request->getSession());
         return $this->render('user/users_list.html.php', ['user' => $user->getUser()]);
     }
+    /**
+     * Личный кабинет
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function userAccount(Request $request): Response
+    {
+        $user = new Security($request->getSession());
+        return $this->render('user/user_account.html.php', ['user' => $user->getUser()]);
+    }
+
+
 }

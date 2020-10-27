@@ -21,6 +21,16 @@ class User
     /**
      * @var string
      */
+    private $birthDate;
+
+    /**
+     * @var float
+     */
+    private $AmountLastOrder;
+
+    /**
+     * @var string
+     */
     private $login;
 
     /**
@@ -36,14 +46,18 @@ class User
     /**
      * @param int $id
      * @param string $name
+     * @param string $birthDate
+     * @param float $AmountLastOrder
      * @param string $login
      * @param string $password
      * @param Role $role
      */
-    public function __construct(int $id, string $name, string $login, string $password, Role $role)
+    public function __construct(int $id, string $name, string $birthDate, float $AmountLastOrder, string $login, string $password, Role $role)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->birthDate = $birthDate;
+        $this->AmountLastOrder = $AmountLastOrder;
         $this->login = $login;
         $this->passwordHash = $password;
         $this->role = $role;
@@ -68,6 +82,22 @@ class User
     /**
      * @return string
      */
+    public function getBirthDate(): string
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmountLastOrder(): float
+    {
+        return $this->AmountLastOrder;
+    }
+
+    /**
+     * @return string
+     */
     public function getLogin(): string
     {
         return $this->login;
@@ -87,5 +117,11 @@ class User
     public function getRole(): Role
     {
         return $this->role;
+    }
+
+    public function setAmountLastOrder(float $lastOrder): float
+    {
+        $this->AmountLastOrder = $lastOrder;
+        return $this->AmountLastOrder;
     }
 }

@@ -1,14 +1,16 @@
 <?php
 
-/** @var \Model\Entity\Product[] $productList */
-/** @var bool $isLogged */
-/** @var \Closure $path */
-$body = function () use ($productList, $isLogged, $path) {
+/** @var float $discount */
+/** @var float $totalPrice */
+$body = function () use ($discount, $totalPrice) {
     ?>
     <form method="post">
         <table cellpadding="10">
             <tr>
-                <td colspan="3" align="center">Покупка успешно совершена</td>
+                <td colspan="3" align="center">Ваша скидка <?= (string)$discount ?> %</td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center">Покупка на сумму <?= (string)$totalPrice ?> руб. успешно совершена</td>
             </tr>
         </table>
     </form>

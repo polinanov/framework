@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Service\User;
 
 use Model;
+use phpDocumentor\Reflection\TypeResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Security implements ISecurity
@@ -50,6 +51,7 @@ class Security implements ISecurity
         $admin = (new Model\Repository\User())->isAdministrator($userId);
         return $admin;
     }
+
     /**
      * @inheritdoc
      */

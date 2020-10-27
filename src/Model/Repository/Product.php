@@ -44,6 +44,17 @@ class Product
     }
 
     /**
+     * Получаем продукты по Id
+     *
+     * @param int $id
+     * @return Entity\Product[]
+     */
+    public function productById(int $id): array
+    {
+        $result = compact($id);
+        return $this->search($result);
+    }
+    /**
      * Получаем продукты из источника данных
      *
      * @param array $search

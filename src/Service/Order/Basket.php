@@ -11,6 +11,9 @@ use Service\Communication\Email;
 use Service\Communication\ICommunication;
 use Service\Discount\IDiscount;
 use Service\Discount\NullObject;
+use Service\Discount\OrderDiscount;
+use Service\Discount\ProductDiscount;
+use Service\Discount\UserDiscount;
 use Service\User\ISecurity;
 use Service\User\Security;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -77,22 +80,36 @@ class Basket
     /**
      * Оформление заказа
      *
-     * @return void
+     * @return array
      */
-    public function checkout(): void
+    public function checkout(): array
     {
         // Здесь должна быть некоторая логика выбора способа платежа
         $billing = new Card();
 
-        // Здесь должна быть некоторая логика получения информации о скидки пользователя
-        $discount = new NullObject();
+
 
         // Здесь должна быть некоторая логика получения способа уведомления пользователя о покупке
         $communication = new Email();
 
         $security = new Security($this->session);
 
-        $this->checkoutProcess($discount, $billing, $security, $communication);
+        // Здесь должна быть некоторая логика получения информации о скидки пользователя
+
+        #Скидка дня рождения
+        #$discountUser = new UserDiscount($security->getUser());
+
+        #Скидка если заказ превышает N количество рублей
+        /*$totalPrice = 0;
+        foreach ($this->getProductsInfo() as $product) {
+            $totalPrice += $product->getPrice();
+        }
+        $discount = new OrderDiscount($totalPrice);*/
+
+        #Скидка по определенному продукту
+        $discount = new ProductDiscount($this->getProductIds());
+
+        return $this->checkoutProcess($discount, $billing, $security, $communication);
     }
 
     /**
@@ -102,26 +119,28 @@ class Basket
      * @param IBilling $billing,
      * @param ISecurity $security,
      * @param ICommunication $communication
-     * @return void
+     * @return array discount
      */
     public function checkoutProcess(
         IDiscount $discount,
         IBilling $billing,
         ISecurity $security,
         ICommunication $communication
-    ): void {
+    ): array
+    {
         $totalPrice = 0;
         foreach ($this->getProductsInfo() as $product) {
             $totalPrice += $product->getPrice();
         }
 
-        $discount = $discount->getDiscount();
-        $totalPrice = $totalPrice - $totalPrice / 100 * $discount;
+        $discount_ = $discount->getDiscount();
+        $totalPrice = $totalPrice - $totalPrice / 100 * $discount_;
 
         $billing->pay($totalPrice);
 
         $user = $security->getUser();
         $communication->process($user, 'checkout_template');
+        return ['discount' => $discount_, 'totalPrice'=> $totalPrice];
     }
 
     /**
@@ -143,4 +162,5 @@ class Basket
     {
         return $this->session->get(static::BASKET_DATA_KEY, []);
     }
+
 }

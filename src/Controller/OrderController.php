@@ -45,8 +45,8 @@ class OrderController
             return $this->redirect('user_authentication');
         }
 
-        (new Basket($request->getSession()))->checkout();
+        $param = (new Basket($request->getSession()))->checkout();
 
-        return $this->render('order/checkout.html.php');
+        return $this->render('order/checkout.html.php', ['discount' => $param['discount'], 'totalPrice' => $param['totalPrice']]);
     }
 }

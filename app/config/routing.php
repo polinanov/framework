@@ -52,5 +52,8 @@ $routes->add(
     'logout',
     new Route('/user/logout', ['_controller' => [\Controller\UserController::class, 'logoutAction']])
 );
-
+$routes->add(
+    'account',
+    new Route('/user/account', ['_controller' => [\Controller\UserController::class, 'userAccount']])
+);
 return $routes;
