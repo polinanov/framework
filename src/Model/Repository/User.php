@@ -109,6 +109,8 @@ class User
                 echo '</td><td align="right">';
                 echo (string)$user['birthDate'];
                 echo '</td><td align="right">';
+                echo (string)$user['AmountLastOrder'];
+                echo '</td><td align="right">';
                 echo (string)$user['login'];
                 echo '</td></tr>';
             }
