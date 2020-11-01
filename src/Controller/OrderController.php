@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Controller;
 
+use Exception;
 use Framework\Render;
 use Service\Order\Basket;
 use Service\User\Security;
@@ -19,6 +20,7 @@ class OrderController
      *
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
     public function infoAction(Request $request): Response
     {
@@ -37,6 +39,7 @@ class OrderController
      *
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
     public function checkoutAction(Request $request): Response
     {
@@ -47,6 +50,7 @@ class OrderController
 
         $param = (new Basket($request->getSession()))->checkout();
 
+        (new Security($request->getSession()))->setLastOrder($param['totalPrice']);
         return $this->render('order/checkout.html.php', ['discount' => $param['discount'], 'totalPrice' => $param['totalPrice']]);
     }
 }

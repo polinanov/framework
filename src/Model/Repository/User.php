@@ -8,7 +8,6 @@ use Model\Entity;
 
 class User
 {
-
     /**
      * Получаем пользователя по идентификатору
      *
@@ -63,59 +62,26 @@ class User
     }
 
     /**
-     * Отображение всех пользователей
+     * Данные всех пользователей
      *
      * @param void
-     * @return void
+     * @return array
      */
-    public function outputUsers(): void
+    public function outputUsers(): array
     {
-        echo '<br>';
-        echo 'Все зарегистрированные пользователи:';
-        echo '<table border="1">';
-        echo '<tr><th align="right">Имя</th><th align="right">Дата рождения</th><th align="right">Логин</th><th align="right">Роль</th></tr>';
-        foreach ($this->getDataFromSource([]) as $user) {
-            echo '<tr><td align="right">';
-            echo (string)$user['name'];
-            echo '</td><td align="right">';
-            echo (string)$user['birthDate'];
-            echo '</td><td align="right">';
-            echo (string)$user['login'];
-            echo '</td><td align="right">';
-            echo (string)$user['role']['role'];
-            echo '</td></tr>';
-        }
-        echo '</table>';
+        return $this->getDataFromSource([]);
     }
 
     /**
-     * Отображение данные пользователя
+     * Данные пользователя
      *
-     * @param int
-     * @return void
+     * @param int $id
+     * @return array
      */
-    public function outputDataUser(int $id): void
+    public function outputDataUser(int $id): array
     {
-        echo '<br>';
-        echo 'Вы находитесь в личном кабинете пользователя';
-        echo '<br><br>';
-        echo 'Ваши данные:';
-        echo '<table border="1">';
-        echo '<tr><th align="right">Имя</th><th align="right">Дата рождения</th><th align="right">Сумма последнего заказа</th><th align="right">Логин</th></tr>';
-        foreach ($this->getDataFromSource(['id' => $id]) as $user) {
-            if ($user['id'] == $id) {
-                echo '<tr><td align="right">';
-                echo (string)$user['name'];
-                echo '</td><td align="right">';
-                echo (string)$user['birthDate'];
-                echo '</td><td align="right">';
-                echo (string)$user['AmountLastOrder'];
-                echo '</td><td align="right">';
-                echo (string)$user['login'];
-                echo '</td></tr>';
-            }
-        }
-        echo '</table>';
+        return $this->getDataFromSource(['id' => $id]);
+
     }
 
 
@@ -123,7 +89,6 @@ class User
      * Проверяем является ли пользователь администратором
      *
      * @param int $id
-     *
      * @return bool
      */
     public function isAdministrator(int $id): bool
@@ -154,6 +119,7 @@ class User
         $admin = ['id' => 1, 'title' => 'Super Admin', 'role' => 'admin'];
         $user = ['id' => 1, 'title' => 'Main user', 'role' => 'user'];
         $test = ['id' => 1, 'title' => 'For test needed', 'role' => 'test'];
+
 
         $dataSource = [
             [

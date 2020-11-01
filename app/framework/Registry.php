@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Framework;
 
+use Exception;
+use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
@@ -14,7 +16,7 @@ class Registry
     /**
      * @var ContainerBuilder
      */
-    private static $containerBuilder;
+    private static ContainerBuilder $containerBuilder;
 
     /**
      * Добавляем контейнер для работы реестра
@@ -36,7 +38,7 @@ class Registry
     public static function getDataConfig(string $name)
     {
         if (!static::$containerBuilder->hasParameter($name)) {
-            throw new \InvalidArgumentException('Unknown config variable ' . $name);
+            throw new InvalidArgumentException('Unknown config variable ' . $name);
         }
 
         return static::$containerBuilder->getParameter($name);
@@ -48,6 +50,7 @@ class Registry
      * @param string name
      * @param array $parameters
      * @return string
+     * @throws Exception
      */
     public static function getRoute(string $name, array $parameters = []): string
     {
@@ -57,8 +60,8 @@ class Registry
         $urlGenerator = new UrlGenerator($routeCollection, new RequestContext());
         try {
             return $urlGenerator->generate($name, $parameters);
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Unknown route name ' . $name);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException('Unknown route name ' . $name);
         }
     }
 }

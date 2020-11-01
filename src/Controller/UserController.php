@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Controller;
 
+use Exception;
 use Framework\Render;
 use Service\User\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +45,7 @@ class UserController
      *
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
     public function logoutAction(Request $request): Response
     {
@@ -72,7 +74,8 @@ class UserController
     public function userAccount(Request $request): Response
     {
         $user = new Security($request->getSession());
-        return $this->render('user/user_account.html.php', ['user' => $user->getUser()]);
+        $param = $user->getLastOrderByUser();
+        return $this->render('user/user_account.html.php', ['user' => $user->getUser(), 'lastOrderAmount' => $param['lastOrderAmount']]);
     }
 
 

@@ -9,7 +9,7 @@ class PromoCode implements IDiscount
     /**
      * @var string
      */
-    private $promoCode;
+    private string $promoCode;
 
     /**
      * @param string $promoCode
@@ -26,11 +26,9 @@ class PromoCode implements IDiscount
     {
         // Получаем по промокоду размер скидки на заказ в процентах
         // $discount = $this->find($this->promoCode)->discount();
-        $discount = 5.50;
-
         // Запрос в систему хранения промокодов для пометки кода как использованный
         // $this->find($this->promoCode)->deactivate();
 
-        return $discount;
+        return 5.50;
     }
 }

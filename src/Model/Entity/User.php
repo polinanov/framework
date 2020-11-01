@@ -4,44 +4,42 @@ declare(strict_types = 1);
 
 namespace Model\Entity;
 
-use phpDocumentor\Reflection\Types\This;
-
 class User
 {
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $birthDate;
+    private string $birthDate;
 
     /**
      * @var float
      */
-    private $AmountLastOrder;
+    private float $AmountLastOrder;
 
     /**
      * @var string
      */
-    private $login;
+    private string $login;
 
     /**
      * @var string
      */
-    private $passwordHash;
+    private string $passwordHash;
 
     /**
      * @var Role
      */
-    private $role;
+    private Role $role;
 
     /**
      * @param int $id

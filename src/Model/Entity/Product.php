@@ -9,22 +9,22 @@ class Product
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var float
      */
-    private $price;
+    private float $price;
 
     /**
      * @var string
      */
-    private $description;
+    private string $description;
 
     /**
      * @param int $id

@@ -6,11 +6,12 @@ namespace Service\Order;
 
 use Model;
 use Service\Billing\Card;
+use Service\Billing\Exception\BillingException;
 use Service\Billing\IBilling;
 use Service\Communication\Email;
+use Service\Communication\Exception\CommunicationException;
 use Service\Communication\ICommunication;
 use Service\Discount\IDiscount;
-use Service\Discount\NullObject;
 use Service\Discount\OrderDiscount;
 use Service\Discount\ProductDiscount;
 use Service\Discount\UserDiscount;
@@ -20,6 +21,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Basket
 {
+    public const DISCOUNT_AMOUNT_ORDER = 10;
+    public const DISCOUNT_AMOUNT_PRODUCT = 8;
+    public const DISCOUNT_AMOUNT_USER = 5;
+
     /**
      * Сессионный ключ списка всех продуктов корзины
      */
@@ -28,7 +33,7 @@ class Basket
     /**
      * @var SessionInterface
      */
-    private $session;
+    private SessionInterface $session;
 
     /**
      * @param SessionInterface $session
@@ -81,6 +86,8 @@ class Basket
      * Оформление заказа
      *
      * @return array
+     * @throws BillingException
+     * @throws CommunicationException
      */
     public function checkout(): array
     {
@@ -97,17 +104,30 @@ class Basket
         // Здесь должна быть некоторая логика получения информации о скидки пользователя
 
         #Скидка дня рождения
-        #$discountUser = new UserDiscount($security->getUser());
+        $discountUserBirth = new UserDiscount($security->getUser());
 
         #Скидка если заказ превышает N количество рублей
-        /*$totalPrice = 0;
+        $totalPrice = 0;
         foreach ($this->getProductsInfo() as $product) {
             $totalPrice += $product->getPrice();
         }
-        $discount = new OrderDiscount($totalPrice);*/
+        $discountBasket = new OrderDiscount($totalPrice);
 
         #Скидка по определенному продукту
-        $discount = new ProductDiscount($this->getProductIds());
+        $discountProduct = new ProductDiscount($this->getProductIds());
+
+        $discountArray = array($discountUserBirth->getDiscount(), $discountBasket->getDiscount(), $discountProduct->getDiscount());
+
+        #Расчет максимальной скидки
+        $discount = max($discountArray);
+        if ($discount == self::DISCOUNT_AMOUNT_USER)
+            $discount = $discountUserBirth;
+        elseif ($discount == self::DISCOUNT_AMOUNT_PRODUCT)
+            $discount = $discountProduct;
+        elseif ($discount == self::DISCOUNT_AMOUNT_ORDER)
+            $discount = $discountBasket;
+        else
+            $discount = $discountUserBirth;
 
         return $this->checkoutProcess($discount, $billing, $security, $communication);
     }
@@ -115,11 +135,13 @@ class Basket
     /**
      * Проведение всех этапов заказа
      *
-     * @param IDiscount $discount,
-     * @param IBilling $billing,
-     * @param ISecurity $security,
+     * @param IDiscount $discount ,
+     * @param IBilling $billing ,
+     * @param ISecurity $security ,
      * @param ICommunication $communication
      * @return array discount
+     * @throws BillingException
+     * @throws CommunicationException
      */
     public function checkoutProcess(
         IDiscount $discount,
@@ -140,7 +162,8 @@ class Basket
 
         $user = $security->getUser();
         $communication->process($user, 'checkout_template');
-        return ['discount' => $discount_, 'totalPrice'=> $totalPrice];
+
+        return ['discount' => $discount_, 'totalPrice'=> $totalPrice, 'userId'=> $user->getId()];
     }
 
     /**

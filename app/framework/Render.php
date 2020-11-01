@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Framework;
 
+use Exception;
 use Service\User\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,6 +65,7 @@ trait Render
      * @param array $parameters
      *
      * @return RedirectResponse
+     * @throws Exception
      */
     private function redirect(string $name, array $parameters = []): RedirectResponse
     {

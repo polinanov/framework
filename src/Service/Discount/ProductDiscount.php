@@ -14,7 +14,7 @@ class ProductDiscount implements IDiscount
     /**
      * @var array
      */
-    private $productId;
+    private array $productId;
 
     /**
      * @param array $productId

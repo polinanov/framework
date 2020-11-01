@@ -28,8 +28,6 @@ class VipDiscount implements IDiscount
     {
         // Получаем индивидуальную скидку VIP пользователя
         // $discount = $this->find($this->user)->discount();
-        $discount = 20;
-
-        return $discount;
+        return 20;
     }
 }

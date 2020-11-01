@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Controller;
 
+use Exception;
 use Framework\Render;
 use Service\Order\Basket;
 use Service\Product\Product;
-use Service\SocialNetwork\ISocialNetwork;
 use Service\SocialNetwork\SocialNetwork;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ class ProductController
      * @param string $id
      * @return Response
      */
-    public function infoAction(Request $request, $id): Response
+    public function infoAction(Request $request, string $id): Response
     {
         $basket = (new Basket($request->getSession()));
 
@@ -71,6 +71,7 @@ class ProductController
      * @param string $network
      *
      * @return Response
+     * @throws Exception
      */
     public function postAction(Request $request, string $network): Response
     {

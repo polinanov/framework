@@ -13,7 +13,7 @@ class OrderDiscount implements IDiscount
     /**
      * @var float
      */
-    private $orderPrice;
+    private float $orderPrice;
 
     /**
      * @param float $orderPrice

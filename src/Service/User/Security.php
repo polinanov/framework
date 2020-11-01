@@ -5,17 +5,17 @@ declare(strict_types = 1);
 namespace Service\User;
 
 use Model;
-use phpDocumentor\Reflection\TypeResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Security implements ISecurity
 {
     private const SESSION_USER_IDENTITY = 'userId';
+    private const SESSION_USER_LAST_ORDER = 0;
 
     /**
      * @var SessionInterface
      */
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(SessionInterface $session)
     {
@@ -40,16 +40,12 @@ class Security implements ISecurity
         return $this->getUser() instanceof Model\Entity\User;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function isAdmin(): bool
     {
         $userId = $this->session->get(self::SESSION_USER_IDENTITY);
         if ($userId == null)
             return false;
-        $admin = (new Model\Repository\User())->isAdministrator($userId);
-        return $admin;
+        return (new Model\Repository\User())->isAdministrator($userId);
     }
 
     /**
@@ -80,9 +76,25 @@ class Security implements ISecurity
     public function logout(): void
     {
         $this->session->set(self::SESSION_USER_IDENTITY, null);
+        $this->session->set(self::SESSION_USER_LAST_ORDER, null);
+        // Здесь могут выполняться другие действия связанные с разлогиниванием пользователя
+    }
+
+    public function setLastOrder(float $totalPrice): void
+    {
+        $this->session->set(self::SESSION_USER_LAST_ORDER, $totalPrice);
 
         // Здесь могут выполняться другие действия связанные с разлогиниванием пользователя
     }
+
+    public function getLastOrderByUser(): array
+    {
+        $userId = $this->session->get(self::SESSION_USER_IDENTITY);
+        $lastOrderAmount= $this->session->get(self::SESSION_USER_LAST_ORDER);
+        return ['userId' => $userId, 'lastOrderAmount'=> $lastOrderAmount];
+        // Здесь могут выполняться другие действия связанные с разлогиниванием пользователя
+    }
+
 
     /**
      * Фабричный метод для репозитория User
