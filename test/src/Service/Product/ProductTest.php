@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Test\Service\Product;
 
+use Generator;
 use Model\Entity\Product as ProductEntity;
 use Model\Repository\Product as ProductRepository;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -42,9 +43,9 @@ class ProductTest extends TestCase
     }
 
     /**
-     * @return \Generator
+     * @return Generator
      */
-    public function dataProviderProduct(): \Generator
+    public function dataProviderProduct(): Generator
     {
         yield 'empty product list' => [
             [
@@ -87,9 +88,9 @@ class ProductTest extends TestCase
     }
 
     /**
-     * @return \Generator
+     * @return Generator
      */
-    public function dataProviderAllProduct(): \Generator
+    public function dataProviderAllProduct(): Generator
     {
         yield 'empty product list' => [
             [

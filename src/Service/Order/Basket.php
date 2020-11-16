@@ -6,16 +6,10 @@ namespace Service\Order;
 
 use Model;
 use Service\Billing\Card;
-use Service\Billing\Exception\BillingException;
-use Service\Billing\IBilling;
 use Service\Communication\Email;
-use Service\Communication\Exception\CommunicationException;
-use Service\Communication\ICommunication;
-use Service\Discount\IDiscount;
 use Service\Discount\OrderDiscount;
 use Service\Discount\ProductDiscount;
 use Service\Discount\UserDiscount;
-use Service\User\ISecurity;
 use Service\User\Security;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -86,22 +80,16 @@ class Basket
      * Оформление заказа
      *
      * @return array
-     * @throws BillingException
-     * @throws CommunicationException
      */
     public function checkout(): array
     {
         // Здесь должна быть некоторая логика выбора способа платежа
         $billing = new Card();
 
-
-
         // Здесь должна быть некоторая логика получения способа уведомления пользователя о покупке
         $communication = new Email();
 
         $security = new Security($this->session);
-
-        // Здесь должна быть некоторая логика получения информации о скидки пользователя
 
         #Скидка дня рождения
         $discountUserBirth = new UserDiscount($security->getUser());
@@ -129,41 +117,14 @@ class Basket
         else
             $discount = $discountUserBirth;
 
-        return $this->checkoutProcess($discount, $billing, $security, $communication);
-    }
+        $builder = new BasketBuilder();
+        $builder->setIDiscount($discount);
+        $builder->setIBilling($billing);
+        $builder->setISecurity($security);
+        $builder->setICommunication($communication);
 
-    /**
-     * Проведение всех этапов заказа
-     *
-     * @param IDiscount $discount ,
-     * @param IBilling $billing ,
-     * @param ISecurity $security ,
-     * @param ICommunication $communication
-     * @return array discount
-     * @throws BillingException
-     * @throws CommunicationException
-     */
-    public function checkoutProcess(
-        IDiscount $discount,
-        IBilling $billing,
-        ISecurity $security,
-        ICommunication $communication
-    ): array
-    {
-        $totalPrice = 0;
-        foreach ($this->getProductsInfo() as $product) {
-            $totalPrice += $product->getPrice();
-        }
-
-        $discount_ = $discount->getDiscount();
-        $totalPrice = $totalPrice - $totalPrice / 100 * $discount_;
-
-        $billing->pay($totalPrice);
-
-        $user = $security->getUser();
-        $communication->process($user, 'checkout_template');
-
-        return ['discount' => $discount_, 'totalPrice'=> $totalPrice, 'userId'=> $user->getId()];
+        $checkoutProcess = new CheckoutProcess($builder);
+        return $checkoutProcess->checkoutProcess($this->getProductsInfo());
     }
 
     /**
