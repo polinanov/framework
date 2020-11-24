@@ -57,4 +57,8 @@ $routes->add(
     'account',
     new Route('/user/account', ['_controller' => [UserController::class, 'userAccount']])
 );
+$routes->add(
+    'product_into_social_network',
+    new Route('/product/social', ['_controller' => [ProductController::class, 'publish']])
+);
 return $routes;

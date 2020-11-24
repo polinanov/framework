@@ -22,8 +22,8 @@ $body = function () use ($productInfo, $isInBasket, $path) {
         <a href="' . $path('product_list') . '">Вернуться к списку</a>
         <br />
         <br />
-        <a href="' . $path('product_into_social_network', ['network' => ISocialNetwork::SOCIAL_NETWORK_VK]) . '?course=' . $productInfo->getName() . '&page_num=' . $productInfo->getId() . '">Поделиться в VK</a><br />
-        <a href="' . $path('product_into_social_network', ['network' => ISocialNetwork::SOCIAL_NETWORK_FACEBOOK]) . '?course=' . $productInfo->getName() . '&page_num=' . $productInfo->getId() . '">Поделиться в Facebook</a><br />
+        <a href="' . $path('product_into_social_network', ['network' => ISocialNetwork::SOCIAL_NETWORK_VK, 'course' => $productInfo->getName()]) .'">Поделиться в VK</a><br />
+        <a href="' . $path('product_into_social_network', ['network' => ISocialNetwork::SOCIAL_NETWORK_FACEBOOK, 'course' => $productInfo->getName()]) . '">Поделиться в Facebook</a><br />
     ';
 };
 

@@ -48,7 +48,7 @@ class OrderController
             return $this->redirect('user_authentication');
         }
 
-        $param = (new Basket($request->getSession()))->checkout();
+        $param = (new Basket($request->getSession()))->order();
 
         (new Security($request->getSession()))->setLastOrder($param['totalPrice']);
         return $this->render('order/checkout.html.php', ['discount' => $param['discount'], 'totalPrice' => $param['totalPrice']]);

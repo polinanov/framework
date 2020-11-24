@@ -80,4 +80,19 @@ class ProductController
 
         return $this->redirect('product_info', ['id' => $request->query->get('page_num', 1)]);
     }
+
+    /**
+     * Публикация сообщения в соц.сети
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function publish(Request $request): Response
+    {
+        $network= $request->query->get('network', '');
+        $courseName = $request->query->get('course', '');
+
+        return $this->render('product/product_into_social_network.html.php', ['network' => $network, 'course'=>$courseName]);
+    }
+
 }
