@@ -33,16 +33,27 @@ class Product
     /**
      * Получаем все продукты
      *
+     * @param string $sortType
      * @return Entity\Product[]
      */
-    public function fetchAll(): array
+    public function fetchAllSort(string $sortType): array
     {
         $productList = [];
-        foreach ($this->getDataFromSource() as $item) {
+
+        $res = $this->getDataFromSource();
+
+        if ($sortType == 'price') {
+            $name  = array_column($res, 'price');
+            array_multisort($name, SORT_ASC, $res);
+        }else{
+            $name  = array_column($res, 'name');
+            array_multisort($name, SORT_ASC, $res);
+        }
+
+        foreach ($res as $item) {
             $prototype = new Entity\Product($item['id'], $item['name'], $item['price'], $item['description']);
             $productList[] = clone $prototype;
         }
-
         return $productList;
     }
 

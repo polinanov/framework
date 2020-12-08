@@ -7,7 +7,7 @@
             "Framework\\": "app/framework/",
             "Test\\": "test/src/"
         },
-        "classmap": ["app/Kernel.php"]
+        "classmap": ["app/"]
     },
     "require": {
         "php": ">=7.4",

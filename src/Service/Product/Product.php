@@ -29,11 +29,12 @@ class Product
      */
     public function getAll(string $sortType): array
     {
-        // Применить паттерн Стратегия
-        // $sortType === 'price'; // Сортировка по цене
-        // $sortType === 'name'; // Сортировка по имени
-
-        return $this->getProductRepository()->fetchAll();
+        $context = new Context();
+        if ($sortType === 'price')
+            $context->setStrategy(new SortByPrice($this->getProductRepository()));
+        else
+            $context->setStrategy(new SortByName($this->getProductRepository()));
+        return $context->executeStrategy();
     }
 
     /**
