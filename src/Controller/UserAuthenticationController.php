@@ -10,7 +10,7 @@ use Service\User\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController
+class UserAuthenticationController
 {
     use Render;
 
@@ -39,44 +39,5 @@ class UserController
 
         return $this->render('user/authentication.html.php', ['error' => $error ?? '']);
     }
-
-    /**
-     * Выходим из системы
-     *
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function logoutAction(Request $request): Response
-    {
-        (new Security($request->getSession()))->logout();
-
-        return $this->redirect('index');
-    }
-
-    /**
-     * Выводим список пользователей
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function usersList(Request $request): Response
-    {
-        $user = new Security($request->getSession());
-        return $this->render('user/users_list.html.php', ['user' => $user->getUser()]);
-    }
-    /**
-     * Личный кабинет
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function userAccount(Request $request): Response
-    {
-        $user = new Security($request->getSession());
-        $param = $user->getLastOrderByUser();
-        return $this->render('user/user_account.html.php', ['user' => $user->getUser(), 'lastOrderAmount' => $param['lastOrderAmount']]);
-    }
-
 
 }
